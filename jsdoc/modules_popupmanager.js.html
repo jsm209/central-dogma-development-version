@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/popupmanager.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/popupmanager.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import PopupDisplayScene from "./scene/popupdisplayscene.js";
+
+/**
+ * Class representing the popup manager
+ */
+class PopupManager {
+    /**
+     * Creates a popup manager
+     * @param {LevelStage} level - the level that the popups should belong to
+     */
+    constructor(level) {
+        this.level = level;
+        this.popupCnt = 0;
+
+        this.popupsConfig = this.level.levelConfig.popups;
+        if (!this.popupsConfig) {
+            this.popupsConfig = {};
+        }
+
+        let popupsKeys = Object.keys(this.popupsConfig);
+        for (let i = 0; i &lt; popupsKeys.length; i++) {
+            let key = popupsKeys[i];
+            let val = this.popupsConfig[key];
+            Mustache.parse(val);
+        }
+
+        this.firstCorrectMatchHappened = false;
+        this.error5MatchCount = 0;
+    }
+
+    /**
+     * Emits an event
+     * @param {string} eventType - the event to be emitted
+     * @param {...*} parameters - parameters to pass onto the event handler
+     */
+    emitEvent(eventType) {
+        if (!(eventType in this.popupsConfig)) {
+            return;
+        }
+        let fn = this["on_" + eventType];
+        if (!fn) {
+            console.error(eventType + " event type is not defined for the popup manager");
+            return;
+        } else {
+            fn = fn.bind(this);
+        }
+        fn(...Array.from(arguments).slice(1));
+    }
+
+    /**
+     * Should be emitted on correct matches. Except the popup will only show on the first time that
+     * the player has made a correct match.
+     * @param {Nucleotide} nucleotide1 - The left nucleotide
+     * @param {Nucleotide} nucleotide2 - The right nucleotide
+     */
+    on_firstCorrectMatch(nucleotide1, nucleotide2) {
+        if (this.firstCorrectMatchHappened) {
+            return;
+        }
+        this.firstCorrectMatchHappened = true;
+        nucleotide1 = nucleotide1.toJSON();
+        nucleotide2 = nucleotide2.toJSON();
+        this.displayPopup(
+            "firstCorrectMatch",
+            {
+                "nucleotide1": nucleotide1,
+                "nucleotide2": nucleotide2,
+            }
+        );
+    }
+
+    /**
+     * Displays a popup telling students that the two nucleotides should be the correct answer.
+     * @param {Nucleotide} nucleotide1 - The left nucleotide
+     * @param {Nucleotide} nucleotide2 - The right nucleotide
+     */
+    on_errorMatch(nucleotide1, nucleotide2) {
+        nucleotide1 = nucleotide1.toJSON();
+        nucleotide2 = nucleotide2.toJSON();
+        this.displayPopup(
+            "errorMatch",
+            {
+                "nucleotide1": nucleotide1,
+                "nucleotide2": nucleotide2,
+            }
+        );
+    }
+
+    /**
+     * Displays a popup telling students that the two NT should be the correct answer. Should be invoked
+     * on every error. Every 5th error will result in popup however.
+     * @param {Nucleotide} nucleotide1 - The left nucleotide
+     * @param {Nucleotide} nucleotide2 - The right nucleotide
+     */
+    on_error5Match(nucleotide1, nucleotide2) {
+        this.error5MatchCount++;
+        if ((this.error5MatchCount - 1) % 5 != 0) {
+            return;
+        }
+        nucleotide1 = nucleotide1.toJSON();
+        nucleotide2 = nucleotide2.toJSON();
+        this.displayPopup(
+            "error5Match",
+            {
+                "nucleotide1": nucleotide1,
+                "nucleotide2": nucleotide2,
+            }
+        );
+    }
+
+    /**
+     * Displays the corresponding popup by rendering a template and using it for the popup.
+     * @param {string} eventType - The type of event that just got fired
+     * @param {JSON} values - The values that should be used to render the event template string
+     */
+    displayPopup(eventType, values) {
+        let rendered = Mustache.render(this.popupsConfig[eventType], values);
+        let sceneName = "popupDisplay" + this.popupCnt;
+        let levelSceneName = "level" + this.level.level;
+        this.level.scene.add(sceneName, PopupDisplayScene, false, {text: rendered, manager: this});
+        let that = this;
+        this.level.time.addEvent({
+            delay: 300,
+            loop: false,
+            callback: function () {
+                that.level.scene.launch(sceneName);
+                that.level.scene.pause();
+                that.level.scene.moveAbove(levelSceneName, sceneName);
+            }
+        });
+        this.popupCnt++;
+    }
+
+    /**
+     * Deletes all popups that this manager has ever created for the game.
+     */
+    destroy() {
+        for (let i = 0; i &lt; this.popupCnt; i++) {
+            this.level.scene.remove("popupDisplay" + i);
+        }
+    }
+}
+
+export default PopupManager;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="Game.html">Game</a></li><li><a href="GameScore.html">GameScore</a></li><li><a href="LevelComplete.html">LevelComplete</a></li><li><a href="LevelStage.html">LevelStage</a></li><li><a href="ListLevels.html">ListLevels</a></li><li><a href="Nucleotide.html">Nucleotide</a></li><li><a href="PopupDisplayScene.html">PopupDisplayScene</a></li><li><a href="PopupManager.html">PopupManager</a></li><li><a href="PositionManager.html">PositionManager</a></li><li><a href="PreLevelStage.html">PreLevelStage</a></li><li><a href="TitleScreen.html">TitleScreen</a></li><li><a href="TouchFeedback.html">TouchFeedback</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jul 29 2019 16:01:44 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

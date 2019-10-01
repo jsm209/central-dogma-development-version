@@ -1,0 +1,215 @@
+<style>
+    .sessionmgr {
+      background: #F0F8FF;
+      border: 1px solid #42464b;
+      border-radius: 6px;
+      height: 511px;
+      margin: 20px auto 0;
+      width: 298px;
+    }
+    .sessionmgr h1 {
+      background-image: linear-gradient(top, #f1f3f3, #d4dae0);
+      border-bottom: 1px solid #a6abaf;
+      border-radius: 6px 6px 0 0;
+      box-sizing: border-box;
+      color: #727678;
+      display: block;
+      height: 43px;
+      font: 600 14px/1 'Open Sans', sans-serif;
+      padding-top: 14px;
+      margin: 0;
+      text-align: center;
+      text-shadow: 0 -1px 0 rgba(0,0,0,0.2), 0 1px 0 #fff;
+    }
+    .sessionmgr input[type="password"], .sessionmgr input[type="text"], .sessionmgr input[type="datetime-local"] {
+      background: linear-gradient(top, #d6d7d7, #dee0e0);
+      border: 1px solid #a1a3a3;
+      border-radius: 4px;
+      box-shadow: 0 1px #fff;
+      box-sizing: border-box;
+      color: #696969;
+      height: 39px;
+      margin: 5px 0 0 29px;
+      padding-left: 37px;
+      transition: box-shadow 0.3s;
+      width: 240px;
+    }
+    .sessionmgr input[type="password"]:focus, .sessionmgr input[type="text"]:focus, .sessionmgr input[type="datetime-local"]:focus {
+      box-shadow: 0 0 4px 1px rgba(55, 166, 155, 0.3);
+      outline: 0;
+    }
+    .sessionmgr .show-password {
+      display: block;
+      height: 16px;
+      margin: 26px 0 0 28px;
+      width: 87px;
+    }
+    .sessionmgr input[type="checkbox"] {
+      cursor: pointer;
+      height: 16px;
+      opacity: 0;
+      position: relative;
+      width: 64px;
+    }
+    .sessionmgr input[type="checkbox"]:checked {
+      left: 29px;
+      width: 58px;
+    }
+    .sessionmgr .toggle {
+      display: block;
+      height: 16px;
+      margin-top: -20px;
+      width: 87px;
+      z-index: -1;
+    }
+    .sessionmgr input[type="checkbox"]:checked + .sessionmgr .toggle { background-position: 0 -16px }
+    .sessionmgr .forgot {
+      color: #7f7f7f;
+      display: inline-block;
+      float: right;
+      font: 12px/1 sans-serif;
+      left: -19px;
+      position: relative;
+      text-decoration: none;
+      top: 5px;
+      transition: color .4s;
+    }
+    .sessionmgr .forgot:hover { color: #3b3b3b }
+    .sessionmgr input[type="submit"] {
+      width:240px;
+      height:35px;
+      display:block;
+      font-family:Arial, "Helvetica", sans-serif;
+      font-size:16px;
+      font-weight:bold;
+      color:#fff;
+      text-decoration:none;
+      text-transform:uppercase;
+      text-align:center;
+      text-shadow:1px 1px 0px #37a69b;
+      padding-top:6px;
+      margin: 29px 0 0 29px;
+      position:relative;
+      cursor:pointer;
+      border: none;  
+      background-color: #37a69b;
+      background-image: linear-gradient(top,#3db0a6,#3111);
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+      border-bottom-right-radius: 5px;
+      border-bottom-left-radius:5px;
+      box-shadow: inset 0px 1px 0px #2ab7ec, 0px 5px 0px 0px #497a78, 0px 10px 5px #999;
+    }
+  
+    .sessionmgr input[type="submit"]:active {
+      top:3px;
+      box-shadow: inset 0px 1px 0px #2ab7ec, 0px 2px 0px 0px #31524d, 0px 5px 3px #999;
+    }
+  
+    .sessionmgr .hidden {
+      display: none;
+    }
+  
+    .sessionmgr .error {
+      color: red;
+      text-align: center;
+    }
+
+    .sessionmgr .slidecontainer {
+        width: 90%; /* Width of the outside container */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .sessionmgr .slider {
+        width: 100%;
+    }
+
+    .sessionmgr p {
+        margin-bottom: 4px;
+    }
+
+    .sessionmgr p, .sessionmgr .radio-btns {
+        margin-left: 17px;
+    }
+
+    .sessionmgr .leaderboard-container {
+        max-height: 130px;
+        overflow-y: scroll;
+    }
+
+    .sessionmgr ul {
+      text-align: center;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .sessionmgr li {
+      margin-bottom: 10px;
+      margin-top: 10px;
+    }
+
+    .sessionmgr li a {
+      display: block;
+      background-color: #1fc8db;
+      background-image: linear-gradient(141deg, #23ce83 0%, #1fc8db 51%, #2cb5e8 75%);
+      height: 25px;
+      width: 250px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-top: 2px;
+      font-size: 15pt;
+      border-radius: 10px;
+      color: white;
+      text-decoration: none;
+      border-color: rgba(0, 0, 0, 0);
+      border-width: 5px;
+      border-style: solid;
+    }
+
+    .sessionmgr li a.selected {
+      border-color: #a25bff;
+      
+    }
+
+    .sessionmgr .leaderboard-container ol {
+        margin: 0;
+    }
+
+    #sessionmgr-error-message {
+      margin-top: 10px;
+    }
+
+    .sessionmgr .label {
+      margin-top: 15px;
+      text-align: center;
+    }
+  </style>
+  
+  <div class="sessionmgr">
+    <h1>Manage Sessions</h1>
+    <div class="leaderboard-container">
+      <ul id="sessionmgr-sessions-list">
+        <li><a href="#" data-session-code="new" class="selected">[Create New Session]</a></li>
+        <li><a href="#" data-session-code="session1">Session1</a></li>
+        <li><a href="#" data-session-code="session1">Session1</a></li>
+        <li><a href="#" data-session-code="session1">Session1</a></li>
+        <li><a href="#" data-session-code="session1">Session1</a></li>
+        <li><a href="#" data-session-start-time="" data-session-end-time="">Session1</a></li>
+        <li><a href="#">Session1</a></li>
+        <li><a href="#">Session1</a></li>
+        <li><a href="#">Session1</a></li>
+        <li><a href="#">Session1</a></li>
+        <li><a href="#">Session1</a></li>
+      </ul>
+    </div>
+    <h1>Session</h1>
+    <input type="text" placeholder="Name" id="sessionmgr-name-input" name="name">
+    <div class="label">Start</div>
+    <input type="datetime-local" placeholder="Start" id="sessionmgr-start-input" name="start">
+    <div class="label">End</div>
+    <input type="datetime-local" placeholder="End" id="sessionmgr-end-input" name="end">
+    <input type="submit" value="Save" name="sessionmgrButton" id="sessionmgr-submit-button">
+    <div class="error hidden" id="sessionmgr-error-message">This session name has already been taken!</div>
+  </div>

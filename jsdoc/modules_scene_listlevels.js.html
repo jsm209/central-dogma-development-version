@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: modules/scene/listlevels.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: modules/scene/listlevels.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * Represents the list level scene
+ * @extends Phaser.Scene
+ */
+class ListLevels extends Phaser.Scene {
+    /**
+     * Creates a list levels scene
+     * @param {Phaser.Types.Scenes.SettingsConfig} config 
+     */
+    constructor (config) {
+        super(config);
+    }
+
+    /**
+     * Initalizes the list levels. Fades in and populate the level list
+     * @param {JSON} data 
+     */
+    init(data) {
+        this.camera = this.cameras.main;
+        this.camera.setAlpha(0);
+
+        this.levels = data.levels;
+
+        this.graphics = this.add.graphics();
+
+        this.graphics.fillStyle(0x9BDBF5, 0.75);
+        this.graphics.fillRect(30, 100, 300, 600);
+
+        this.add.text(18, 53, "Choose a level", 
+            {fontFamily: '\'Open Sans\', sans-serif', fontSize: '24pt', color: '#000'});
+
+        let that = this;
+        this.fadeIn(function () {
+            that.populateLevels();
+        });
+    }
+
+    /**
+     * Populate the level list
+     */
+    populateLevels() {
+        for (let i = 0; i &lt; this.levels.length; i++) {
+            let x = 80 + 100 * (i % 3);
+            let y = 150 + 100 * Math.floor(i / 3);
+
+            let that = this;
+            this.time.addEvent({
+                delay: 75 * i,
+                callback: function () {
+                    let lvlBtn = that.add.image(x, y, "nt_adenine_basic").setScale(0.20).setInteractive();
+                    lvlBtn.setData("level", i);
+
+                    let xtxt = x - 18;
+                    let ytxt = y - 30;
+                    let txt = that.add.text(xtxt, ytxt, i + 1, 
+                        {fontFamily: '\'Open Sans\', sans-serif', fontSize: '35pt', color: '#fff', stroke: '#000', strokeThickness: 10});  
+                    
+                    if (that.levels[i].unlocked) {
+                        lvlBtn.addListener("pointerup", that.bindFn(that.onLvlClick));
+                        lvlBtn.addListener("pointerdown", that.bindFn(that.lvlPointerDown));
+                        lvlBtn.addListener("pointerup", that.bindFn(that.lvlPointerRelease));
+                    } else {
+                        lvlBtn.setAlpha(0.50);
+                        txt.setAlpha(0.75);
+                    }
+                },
+                loop: false
+            });
+        }
+    }
+
+    /**
+     * Stop the titlescreen and start the prelevel scene
+     * @param {Phaser.GameObjects.Image} img - image that got clicked
+     */
+    onLvlClick(img) {
+        let level = img.getData("level");
+        this.camera.fadeOut(400);
+
+        let that = this;
+        this.time.addEvent({
+            delay: 400,
+            loop: false,
+            callback: function () {
+                that.scene.stop("titlescreen");
+                that.scene.start("levelpre" + level);
+            }
+        });
+        this.camera.setBounds(0, 0, 360, 740);
+        this.camera.pan(img.x, img.y, 400).zoomTo(4, 400, Phaser.Math.Easing.Expo.In);
+        let titleScreenScene = this.scene.manager.getScene("titlescreen");
+        this.scene.manager.resume("titlescreen");
+        titleScreenScene.camera.setBounds(0, 0, 360, 740);
+        titleScreenScene.camera.pan(img.x, img.y, 400).zoomTo(4, 400, Phaser.Math.Easing.Expo.In);
+    }
+
+    /**
+     * Shrink the image
+     * @param {Phaser.GameObjects.Image} img 
+     */
+    lvlPointerDown(img) {
+        img.setScale(0.15);
+    }
+
+    /**
+     * unshrink the image
+     * @param {Phaser.GameObjects.Image} img 
+     */
+    lvlPointerRelease(img) {
+        img.setScale(0.20);
+    }
+
+    /**
+     * Changes the context of the function `this` keyword to the class. Moves the `this` reference to the first parameter instead.
+     * @param {function} fn - The function used to bind to the class
+     */
+    bindFn(fn) {
+        let clas = this;
+        return function (...args) {
+            let event = this;
+            fn.bind(clas, event, ...args)();
+        };
+    }
+
+    /**
+     * Fade in camera scene
+     * @param {function} [callback=null] - should be called when done fading in
+     */
+    fadeIn(callback=null) {
+        let currentAlpha = this.camera.alpha;
+        if (currentAlpha == 0) {
+            currentAlpha = 0.0001;
+        }
+        let newAlpha = currentAlpha * 1.5;
+        if (newAlpha > 0.999) {
+            this.camera.clearAlpha();
+            if (callback != null) {
+                callback();
+            }
+        } else {
+            this.camera.setAlpha(newAlpha);
+            let that = this;
+            this.time.addEvent({
+                delay: 40,
+                callback: function () {
+                    that.fadeIn(callback);
+                },
+                loop: false
+            });
+        }
+    }
+}
+
+export default ListLevels;
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Namespaces</h3><ul><li><a href="window.html">window</a></li></ul><h3>Classes</h3><ul><li><a href="Game.html">Game</a></li><li><a href="GameScore.html">GameScore</a></li><li><a href="LevelComplete.html">LevelComplete</a></li><li><a href="LevelStage.html">LevelStage</a></li><li><a href="ListLevels.html">ListLevels</a></li><li><a href="Nucleotide.html">Nucleotide</a></li><li><a href="PopupDisplayScene.html">PopupDisplayScene</a></li><li><a href="PopupManager.html">PopupManager</a></li><li><a href="PositionManager.html">PositionManager</a></li><li><a href="PreLevelStage.html">PreLevelStage</a></li><li><a href="TitleScreen.html">TitleScreen</a></li><li><a href="TouchFeedback.html">TouchFeedback</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.3</a> on Mon Jul 29 2019 16:01:44 GMT-0700 (Pacific Daylight Time)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
