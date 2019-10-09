@@ -22,6 +22,7 @@ import Game from "./modules/game.js";
             "controls": ["T", "A"],
             "unlocked": true,
             "name": "AT the Beginning!",
+            "description": "You can include whatever description you want here. Maybe even add a picture or some kind of explanation. But it probably shouldn't be a wall of text.",
             "speed": 50,
             "popups": {
                 "firstCorrectMatch": "Good work! <style='color: {{ nucleotide1.color }};'>{{ nucleotide1.name }}</style> binds with <style='color: {{ nucleotide2.color }};'>{{ nucleotide2.name }}</style>!",
@@ -55,6 +56,7 @@ import Game from "./modules/game.js";
             "controls": ["T", "A"],
             "unlocked": true,
             "name": "Back AT it Again...",
+            "description": "I'm back at it again to show you that the description can indeed actually change. All this data is stored with the level files so it's very easy to change.",
             "speed": 25,
             "popups": {},
             "rotateNT": false,
@@ -85,6 +87,7 @@ import Game from "./modules/game.js";
             "controls": ["T", "A"],
             "unlocked": true,
             "name": "AT's all Folks!",
+            "description": "Hopefully this is something useful, at least education wise for providing a little more context. If not this space can be potentially used for other things like high score, pointing to other resources, etc.",
             "speed": 1,
             "popups": {},
             "rotateNT": false,

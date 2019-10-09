@@ -189,11 +189,6 @@ class PositionManager {
             if (this.level.levelConfig.lvlType == "dna_replication") {
                 nucleotide.setDisplay("nucleotide");
             } else if (this.level.levelConfig.lvlType == "codon_transcription") {
-                // let exp = this.calcExponential(0, 80, initVertPathPts.length, 15, i);
-                // x = x - exp;
-                // if (nucleotide.display != "codon") {
-                //     nucleotide.setPosition(x, y);
-                // }
                 x = x - 70;
                 nucleotide.setPosition(x, y);
                 nucleotide.setDisplay("codon");
@@ -220,7 +215,6 @@ class PositionManager {
             let scalePrev = 0;
 
             // Handles scaling of nucleotides/codons
-            // What I think is happening is that each nucleotide is at scale prev and animates up to scale..?
             if (this.level.levelConfig.lvlType == "dna_replication") {
                 scale = this.calcInScale(i, modifier, modifier1, modifier2);
                 scalePrev = this.calcInScale(i - 1, modifier, modifier1, modifier2);
@@ -465,7 +459,7 @@ class PositionManager {
     _fadeOut(nucleotide, callback=null) {
         let currentAlpha = nucleotide.getObject().alpha;
         let newAlpha = currentAlpha / 1.5;
-        if (newAlpha > 5) {
+        if (newAlpha < 0.1) {
             nucleotide.getObject().clearAlpha();
             nucleotide.setVisible(false);
             nucleotide.updateErrorDisplay();
@@ -480,7 +474,7 @@ class PositionManager {
             this.game.time.addEvent({
                 delay: 40,
                 callback: function () {
-                    that._fadeOut(nucleotide);
+                    that._fadeOut(nucleotide, callback);
                 },
                 loop: false
             });
@@ -515,7 +509,7 @@ class PositionManager {
             }
         }
         // levelNucleotides is a collection of all nucleotides and null objects along the line.
-        // It shortens the array each tick by 1...
+        // It shortens the array each tick by 1.
         this.levelNucleotides = this.levelNucleotides.slice(1, this.levelNucleotides.length);
         this.compLevelNucleotides = this.compLevelNucleotides.slice(1, this.compLevelNucleotides.length);
 
