@@ -63,7 +63,9 @@ class ListLevels extends Phaser.Scene {
         });
 
         this.goBtn.on("pointerdown", () => {
-            this.startPrelevel(this.curLevel);
+            if (this.levels[this.curLevel].unlocked == true) {
+               this.startPrelevel(this.curLevel); 
+            }
         })
 
 
@@ -607,6 +609,9 @@ class ListLevels extends Phaser.Scene {
         }
     }
 
+    /**
+     * Selects the next level.
+     */
     browseRight() {
         if (this.curLevel < this.levels.length - 1) {
             this.curLevel++;
@@ -614,6 +619,9 @@ class ListLevels extends Phaser.Scene {
         }
     }
 
+    /**
+     * Selects the previous level.
+     */
     browseLeft() {
         if (this.curLevel > 0) {
             this.curLevel--;
@@ -621,6 +629,10 @@ class ListLevels extends Phaser.Scene {
         }
     }
 
+    /**
+     * In the level selection scene, displays the information related to a level.
+     * @param {Int} - The level whose data should be displayed.
+     */
     displayLevel(level) {
         if (level > this.levels.length || this.level < 0) {
             console.error("Given level number to display, " + this.level + ", is not a valid level number.");
@@ -640,9 +652,20 @@ class ListLevels extends Phaser.Scene {
             } else {
                 difficulty = "(Hard)";
             }
+
+            // Rendering text, testing if it is unlocked and/or has a description.
             this.levelBrowseTitle.text = title;
-            this.levelBrowseSubtitle.text = "Level " + (level + 1) + " - " + difficulty;
-            this.levelBrowseDesc.text = desc;
+            if (this.levels[level].unlocked == true) {
+                if (typeof this.levels[level].description === "undefined") {
+                    this.levelBrowseDesc.text = "Description not available."
+                } else {
+                    this.levelBrowseDesc.text = desc;
+                }
+                this.levelBrowseSubtitle.text = "Level " + (level + 1) + " - " + difficulty;
+            } else {
+                this.levelBrowseSubtitle.text = "Level " + (level + 1) + " - LOCKED";
+                this.levelBrowseDesc.text = "You could probably write something about how to unlock this level here.";
+            }
         }
     }
 }

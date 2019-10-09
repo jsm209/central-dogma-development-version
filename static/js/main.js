@@ -114,6 +114,42 @@ import Game from "./modules/game.js";
             },
         },
         {
+            // "ntSequence": "ATATTTTAAATATATATATATAATTATATATATATATA"
+            "ntSequence": "ATATTTTAAATATATATATA",
+            "controls": ["T", "A"],
+            "unlocked": false,
+            "name": "Testing Locked Levels!",
+            "description": "If this text shows up, something isn't working correctly.",
+            "speed": 50,
+            "popups": {
+                "firstCorrectMatch": "Good work! <style='color: {{ nucleotide1.color }};'>{{ nucleotide1.name }}</style> binds with <style='color: {{ nucleotide2.color }};'>{{ nucleotide2.name }}</style>!",
+                "error5Match": "In DNA <style='color: {{ nucleotide1.color }};'>{{ nucleotide1.name }}</style> can only bind to <style='color: {{ nucleotide2.color }};'>{{ nucleotide2.name }}</style>, both nucleotides help make up DNA!"
+            },
+            "rotateNT": false,
+            "ntType": "basic",
+            "lvlType": "dna_replication",
+            "quiz": {
+                "question": "Three base pairs are called a __________.",
+                "options": [
+                    "Codon", // first option is correct
+                    "Amino Acid",
+                    "Peptide",
+                    "DNA",
+                ],
+            },
+            "sequencedinfo": {
+                "name": "insulin",
+                "description": "<strong>Insulin</strong> is a <span style='color: blue;'>gene</span> that codes for a peptide (sequence of <span style='color: red;'>amino acids</span>) that acts as a hormone to regulate metabolism",
+                "infourl": "https://www.cdc.gov/diabetes/basics/diabetes.html",
+                "imgurl": "./static/img/flashcard/insulin.png",
+            },
+            "knowledgepanel": {
+                "description": "<strong>Promoter sequences</strong> are <span style='color: forestgreen;'>DNA</span> sequences that define where transcription of a <span style='color: blue;'>gene starts</span>.",
+                "imgurl": "./static/img/flashcard/promoter_dna.png",
+            },
+        },        
+
+        {
             "ntSequence": "CGCGCGCGGGGCCGCGCGGC",
             "controls": ["G", "C"],
             "unlocked": true,
