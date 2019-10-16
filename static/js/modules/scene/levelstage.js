@@ -28,14 +28,14 @@ class LevelStage extends Phaser.Scene {
      */
     init(data) {
         // Color Constants
-        let ORANGE = 0xFE5832;
+        let ORANGE = 0xF56C26; // Adenine
         let DARK_BLUE = 0x002664;
-        let CYAN = 0x21EEE9;
+        let CYAN = 0x22F2DD; // Thymine
         let BLUE = 0x006FFF;
         let WHITE = 0xFFFFFF;
-        let DARKER_BLUE = 0x0e1e2d;
+        let DARKER_BLUE = 0x103B75; // Cytosine
         let BLACK = 0x1e1e1e;
-        let GOLD = 0xF5B222;
+        let GOLD = 0xF5B222; // Guanine
 
         this.levelConfig = data.level;
         this.gameObj = data.gameObj;
@@ -248,7 +248,7 @@ class LevelStage extends Phaser.Scene {
             scale = 0.20;
             nt.setAngle(180); // Makes button face correct way.
         } else if (this.levelConfig.lvlType == "codon_transcription") {
-            scale = 0.55;
+            scale = .60;
             nt.setAngle(180);
         }
         nt.setScale(scale);
@@ -388,19 +388,20 @@ class LevelStage extends Phaser.Scene {
         if (!this.ntBtnsEnabled) {
             return;
         }
+
+        // Rotates 90 degrees if not dragged but tapped.
         let distance = image.getData("distanceDragged");
         if (distance < 15 && this.rotateNT) {
-            // Rotates 90 degrees if not dragged but tapped.
             let nt = image.getData("nucleotide");
             nt.setAngle(nt.getAngle() + 90);
-
             console.log("Angle set to " + nt.getAngle());
-        } else if (this.positionManager.ntTouchingBindingPocket()){
+
+        // Otherwise we're actually dragging
+        } else if (this.positionManager.ntTouchingBindingPocket()) {
+
             let angle = image.angle;
             let clickedNT = image.getData("nucleotide");
-            // ntTouchingBindingPocket also uses getHeadNucleotide, so we call it twice...
             let headNT = this.positionManager.getHeadNucleotide();
-            // getHeadNucleotide is only triggering once...
             let cloned = clickedNT.clone();
             if (this.levelConfig.lvlType == "dna_replication") {
                 cloned.setDisplay("nucleotide");
@@ -414,20 +415,17 @@ class LevelStage extends Phaser.Scene {
             this.shuffleNTBtnAngle();
             this.ntBtnsEnabled = false;
 
-            // On a "correct" match, T and C are -360 degrees and A and G are -180 degrees for some reason.
-            // This may be the result of guessing numbers, or the fact that the angle is set in several different places,
-            // or the lack of a clear point of reference, but this is what it ends up as...s
 
             if (!clickedNT.validMatchWith(headNT) || (this.rotateNT && cloned.getAngle() != -180)) {
                 
                 // Wrong Match
-                console.log("DOUBLE SUB POSSIBILITY.");
                 let correctnt = this.positionManager.getValidMatchNT(headNT);
                 this.popupmanager.emitEvent("errorMatch", headNT, correctnt);
                 this.popupmanager.emitEvent("error5Match", headNT, correctnt);
                 cloned.setError(true);
                 this.scorekeeping.incrementIncorrectSequences();
                 this.incorrectSound.play();
+
             } else {
 
                 // Correct Match
