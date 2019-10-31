@@ -103,6 +103,7 @@ class Game {
         this.game.load.image("right_arrow_btn", "static/img/rightArrowBtn.png");
         this.game.load.image("left_arrow_btn", "static/img/leftArrowBtn.png");
         this.game.load.image("go_btn", "static/img/goBtn.png");
+        this.game.load.image("effect_disable_btn", 'static/img/effectDisableBtn.png');
         this.game.load.image("binding_pocket", "static/img/bindingpocket.png");
 
         // ADENINE
@@ -168,7 +169,7 @@ class Game {
         // Codons Level
         this.game.load.image("bindingsite", "static/img/bindingsite.png");
 
-        this.game.scene.add("listlevels", ListLevels, false, {levels: this.levels});
+        this.game.scene.add("listlevels", ListLevels, false, {gameObj: this, levels: this.levels});
         for (let i = 0; i < this.levels.length; i++) {
             let level = this.levels[i];
             this.game.scene.add("levelpre" + i, PreLevelStage, false, {gameObj: this, lvlNum: i, level: level});
@@ -189,7 +190,8 @@ class Game {
         this.game.load.audio("correct", "static/audio/sounds/Correct.wav");
         
         // Etc.
-        this.game.load.image("fluff", "static/img/amoeba.png");
+        this.game.load.image("fluff", "static/img/fluff.png");
+        this.game.load.image("fluff_dark", "static/img/fluff_dark.png");
     
     }
 
