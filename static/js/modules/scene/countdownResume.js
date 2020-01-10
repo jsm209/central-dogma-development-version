@@ -28,7 +28,7 @@ class CountdownResumeScreen extends Phaser.Scene {
 
         let that = this;
         this.time.addEvent({
-            delay: 11,
+            delay: 1000,
             loop: true,
             callback: function() {
                 curTime = curTime - 1;
