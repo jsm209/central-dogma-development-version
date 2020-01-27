@@ -386,7 +386,7 @@ class ListLevels extends Phaser.Scene {
         if (this.domOverlay) {
             return;
         }
-        this.domOverlay = this.add.dom(180, 300).createFromCache('html_login');
+        this.domOverlay = this.add.dom(180, 300).createFromHTML('html_login');
         this.add.tween({
             targets: [this.fadeCover],
             ease: 'Sine.easeInOut',
@@ -401,6 +401,9 @@ class ListLevels extends Phaser.Scene {
                 }
             }
         });
+        //let option = this.domOverlay.createElement("option");
+        //option.textContent = "test";
+        //this.domOverlay.getChildByID("adjective-selector").appendChild(option);
         this.domOverlay.addListener("click");
         this.domOverlay.on("click", function (event) {
             if (event.target.id === "login-register") {

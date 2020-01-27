@@ -122,7 +122,43 @@
   }
 </style>
 
+<script type="text/javascript">
+
+window.addEventListener("load", init);
+
+let adjectives = ["wise", "agile", "strong", "inspiring", "heroic", "encouraging", "funny", "dexterous", "skillful", "clever"]
+
+function init() {
+  console.log("we here");
+  // load up adjective select with adjectives in a random order
+  shuffleArray(adjectives);
+  let adjectiveSelector = document.getElementById("adjective-selector");
+  for (let i = 0; i < adjectives.length; i++) {
+    let option = document.createElement("option");
+    option.value = adjectives[i];
+    option.textContent = capitalizeFirstLetter(adjectives[i]);
+    adjectiveSelector.appendChild(option);
+  }
+}
+
+function shuffleArray(array) {
+  for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }  
+}
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+</script>
+
 <div class="login">
+    <select name="user-adjective" id="adjective-selector">
+    </select>
     <input type="text" placeholder="Username" id="login-username" name="username">
     <input type="password" placeholder="Password" id="login-password" name="password">
     <!-- <a href="#" class="forgot">forgot password?</a> -->
