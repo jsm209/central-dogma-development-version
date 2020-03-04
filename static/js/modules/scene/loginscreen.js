@@ -103,8 +103,12 @@ class LoginScreen extends Phaser.Scene {
                 this.domOverlay.getChildByID(domOverlayFieldIDs[i]).value = formattedUserData[i];
             }
 
-            this.domOverlay.getChildByID("user-found").textContent = "Looks like you've signed in before. Is this you?"
-            this.domOverlay.getChildByID("user-name").textContent = this.domOverlay.getChildByID("adjective-selector").value.replace(/\b\w/g, l => l.toUpperCase()) + " " + this.domOverlay.getChildByID("color-selector").value.replace(/\b\w/g, l => l.toUpperCase()) + " " + this.domOverlay.getChildByID("animal-selector").value.replace(/\b\w/g, l => l.toUpperCase())
+            // Filled out the form, but hides it, only showing the confirm relog form.
+            // If they accept the relog, it acts as a regular sign in button, using the hidden form values.
+            // If they reject the relog, it changes the display to show the login screen again.
+            this.domOverlay.getChildByID("returnUserDisplay").classList.remove("hidden");
+            this.domOverlay.getChildByID("loginUserDisplay").classList.add("hidden");
+            this.domOverlay.getChildByID("user-name-relog").textContent = this.domOverlay.getChildByID("adjective-selector").value.replace(/\b\w/g, l => l.toUpperCase()) + " " + this.domOverlay.getChildByID("color-selector").value.replace(/\b\w/g, l => l.toUpperCase()) + " " + this.domOverlay.getChildByID("animal-selector").value.replace(/\b\w/g, l => l.toUpperCase())
         }
 
         this.domOverlay.addListener("click");
@@ -119,6 +123,11 @@ class LoginScreen extends Phaser.Scene {
                 event.preventDefault();
                 this._dismissOverlay(0);
                 this.showRegisterOverlay(0);
+            } else if (event.target.id == "no-relog-button") {
+                // If they reject the relog, it changes the display to show the login screen again.
+                this.domOverlay.getChildByID("returnUserDisplay").classList.add("hidden");
+                this.domOverlay.getChildByID("loginUserDisplay").classList.remove("hidden");
+
             } else if (event.target.id == "login-button") {
                 event.preventDefault();
                 

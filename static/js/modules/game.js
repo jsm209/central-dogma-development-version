@@ -318,7 +318,7 @@ class Game {
         this.game.load.html("html_sequencedinfo", "static/html/sequencedinfo.html");
         this.game.load.html("html_knowledgepanel", "static/html/knowledgepanel.html");
         this.game.load.html("html_quiz", "static/html/quiz.html");
-
+        this.game.load.html("html_levelleaderboard", "static/html/levelleaderboard.html");
 
         // Audio
         this.game.load.audio("incorrect", "static/audio/sounds/Incorrect.wav");

@@ -42,12 +42,12 @@ class TitleScreen extends Phaser.Scene {
         
 
         // Intro title screen ISB logo
-        let isblogo = this.game.add.image(180, 320, "logo_isb").setScale(0.5);
+        let isblogo = this.game.add.image(180, 320, "logo_isb").setScale(0.5).setDepth(10);
 
         // upper right ISB logo
         this.isblogo = this.game.add.image(280, 30, "logo_isb").setScale(0.30).setAlpha(0).setDepth(1);
 
-        let dogmaLogo = this.game.add.sprite(185, 280, "logo_dogma_intro", 0).setScale(1.4);
+        let dogmaLogo = this.game.add.sprite(185, 280, "logo_dogma_intro", 0).setScale(1.4).setDepth(10);
         this.dogmaLogo = dogmaLogo;
 
         // Notifications
@@ -338,7 +338,7 @@ class TitleScreen extends Phaser.Scene {
             let screenHeight = 720; // height of box to randomly spawn floaties
 
             let myFloaty = this.floaty.create(screenWidth * Math.random(), screenHeight * Math.random(), 'fluff_dark');
-            myFloaty.setScale(maxScale).setDepth(0.5).setAlpha(0.15);
+            myFloaty.setScale(maxScale).setDepth(0.2).setAlpha(0.15);
 
             // Randoly sets speed to some percentage of its max speed, in a random direction
             myFloaty.setVelocity(Phaser.Math.Between(-maxSpeed * Math.random(), maxSpeed * Math.random()), 
