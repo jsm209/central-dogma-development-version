@@ -125,8 +125,14 @@ class LoginScreen extends Phaser.Scene {
                 this.showRegisterOverlay(0);
             } else if (event.target.id == "no-relog-button") {
                 // If they reject the relog, it changes the display to show the login screen again.
+                // Also erase any previously stored login info
+                // Also reset all the form fields
+
+                localStorage.removeItem("username");
+                this.resetFields(this.domOverlay);
                 this.domOverlay.getChildByID("returnUserDisplay").classList.add("hidden");
                 this.domOverlay.getChildByID("loginUserDisplay").classList.remove("hidden");
+                
 
             } else if (event.target.id == "login-button") {
                 event.preventDefault();
@@ -191,6 +197,20 @@ class LoginScreen extends Phaser.Scene {
                 this.scene.start("titlescreen", {skipToLevelsList: false, gameObj: data.gameObj, fadeIn: true});
             }
         }, this);
+    }
+    /**
+     * Given the dom overlay, will reset the login form field to default values
+     * @param {DOMOverlay} - The DOMOverlay phaser object
+     */
+    resetFields(domOverlay) {
+        console.log("called reset fields");
+        domOverlay.getChildByID("adjective-selector").value = "";
+        domOverlay.getChildByID("color-selector").value = "";
+        domOverlay.getChildByID("animal-selector").value = "";
+        domOverlay.getChildByID("state-selector").value = "";
+        domOverlay.getChildByID("grade-selector").value = "";
+        domOverlay.getChildByID("gender-selector").value = "";
+        domOverlay.getChildByID("login-sessionName").value = "";
     }
 
     /**
