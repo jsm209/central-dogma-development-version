@@ -44,19 +44,19 @@ class QuizScreen extends Phaser.Scene {
         if (level == 1) {
             this.quizQuestion = questions[0];
         } else if (level <= 2) {
-            this.quizQuestion = questions[Math.floor(2 * Math.random())];
+            this.quizQuestion = questions[Math.round(1 * Math.random()) + 1];
         } else if (level <= 4) {
-            this.quizQuestion = questions[Math.floor(5 *  Math.random())];
+            this.quizQuestion = questions[Math.round(4 *  Math.random()) + 1];
         } else if (level <= 6) {
-            this.quizQuestion = questions[Math.floor(8 *  Math.random())];
+            this.quizQuestion = questions[Math.round(7 *  Math.random()) + 1];
         } else if (level <= 11) {
-            this.quizQuestion = questions[Math.floor(12 *  Math.random())];
+            this.quizQuestion = questions[Math.round(11 *  Math.random()) + 1];
         } else if (level <= 15) {
-            this.quizQuestion = questions[Math.floor(18 *  Math.random())];
+            this.quizQuestion = questions[Math.round(17 *  Math.random()) + 1];
         } else if (level <= 17) {
-            this.quizQuestion = questions[Math.floor(21 *  Math.random())];
+            this.quizQuestion = questions[Math.round(20 *  Math.random()) + 1];
         } else if (level <= 19) {
-            this.quizQuestion = questions[Math.floor(25 *  Math.random())];
+            this.quizQuestion = questions[Math.round(24 *  Math.random()) + 1];
         } else {
             this.quizQuestion = questions[Math.floor(questions.length * Math.random())];
         }
@@ -95,6 +95,7 @@ class QuizScreen extends Phaser.Scene {
         // Initializing the quiz question object to store later for this question attempt
         this.questionResult = {
             timestamp: new Date().toString(),
+            score: this.points,
             question: this.quizQuestion,
             attempts: 1,
             questionNum: data.gameObj.GLOBAL.QUIZ_RESULTS.length + 1
@@ -140,6 +141,7 @@ class QuizScreen extends Phaser.Scene {
                 this.submitFeedback.setColor("#FF0000");
                 this.halvePointsAndDisplay();
                 this.questionResult.attempts++;
+                this.questionResult.score = Math.floor(this.questionResult.score / 2);
     
                 for (let i = 0; i < this.choices.length; i++) { 
                     
@@ -161,7 +163,7 @@ class QuizScreen extends Phaser.Scene {
         this.submitFeedback.setAlpha(0);
         this.choiceBox.setAlpha(0);
         this.actionFeedback.setAlpha(0);
-        let delay = 3000;
+        let delay = 1500;
 
         // Animate questionbox to final position after small delay
         setTimeout(() => {
