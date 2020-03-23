@@ -1,3 +1,5 @@
+import AudioPlayer from "../audioplayer.js";
+
 /**
  * Represents the level stage scene
  * @extends Phaser.Scene
@@ -26,6 +28,9 @@ class QuizScreen extends Phaser.Scene {
         let WHITE = 0xFFFFFF;
         let DARKER_BLUE = 0x0e1e2d;
         let BLACK = 0x000000;
+
+        // Sound Effects
+        this.audioplayer = new AudioPlayer();
 
         // retrieve question bank
         let questions = data.cache.json.entries.entries.quizQuestions.questions;
@@ -60,42 +65,42 @@ class QuizScreen extends Phaser.Scene {
         } else {
             this.quizQuestion = questions[Math.floor(questions.length * Math.random())];
         }
-        
-        this.points = this.quizQuestion.worth;
+		
+		this.points = this.quizQuestion.worth;
 
-        // If the question is drag and drop, randomly pick between the two formats (drag and drop or multiple choice)
-        // All drag and drop questions can be in a multiple choice format,
-        // but multiple choice questions cannot be in a drag and drop format.
-        if (this.quizQuestion.type == "drag and drop") {
-            let coin = Math.floor(Math.random() * 2);
-            if (coin == 0) {
-                this.quizQuestion.type = "multiple choice"
-            }
-        }   
+		// If the question is drag and drop, randomly pick between the two formats (drag and drop or multiple choice)
+		// All drag and drop questions can be in a multiple choice format,
+		// but multiple choice questions cannot be in a drag and drop format.
+		if (this.quizQuestion.type == "drag and drop") {
+		    let coin = Math.floor(Math.random() * 2);
+		    if (coin == 0) {
+			this.quizQuestion.type = "multiple choice"
+		    }
+		}   
 
-        // Initialize Quiz Layout
-        this.questionBox = this.add.rectangle(180, 365, 320, 175, BLUE).setAlpha(1.0).setStrokeStyle(2, WHITE, 1);
-        this.choiceBox = this.add.rectangle(180, 430, 320, 280, BLACK).setAlpha(1.0).setStrokeStyle(2, WHITE, 1);
+		// Initialize Quiz Layout
+		this.questionBox = this.add.rectangle(180, 365, 320, 175, BLUE).setAlpha(1.0).setStrokeStyle(2, WHITE, 1);
+		this.choiceBox = this.add.rectangle(180, 430, 320, 280, BLACK).setAlpha(1.0).setStrokeStyle(2, WHITE, 1);
 
-        // Question prompt
-        this.prompt = this.add.text(30, 320, "", {fontFamily: 'Teko, sans-serif', fontSize: '26pt', color: '#FFFFFF', wordWrap: { width: 290, useAdvancedWrap: true }}).setAlpha(0);
-        this.tweens.add({ targets: this.prompt, alpha: 1.0, duration: 600, ease: 'power4' });
-        this.prompt.text = this.quizQuestion.prompt;
+		// Question prompt
+		this.prompt = this.add.text(30, 320, "", {fontFamily: 'Teko, sans-serif', fontSize: '26pt', color: '#FFFFFF', wordWrap: { width: 290, useAdvancedWrap: true }}).setAlpha(0);
+		this.tweens.add({ targets: this.prompt, alpha: 1.0, duration: 600, ease: 'power4' });
+		this.prompt.text = this.quizQuestion.prompt;
 
-        // Point worth above question prompt
-        this.pointWorth = this.add.text(30, 280, "(" + this.points + " Points)", {fontFamily: 'Teko, sans-serif', fontSize: '26pt', color: '#FFFFFF', wordWrap: { width: 290, useAdvancedWrap: true }}).setAlpha(0);
-        this.tweens.add({ targets: this.pointWorth, alpha: 1.0, duration: 600, ease: 'power4' });
+		// Point worth above question prompt
+		this.pointWorth = this.add.text(30, 280, "(" + this.points + " Points)", {fontFamily: 'Teko, sans-serif', fontSize: '26pt', color: '#FFFFFF', wordWrap: { width: 290, useAdvancedWrap: true }}).setAlpha(0);
+		this.tweens.add({ targets: this.pointWorth, alpha: 1.0, duration: 600, ease: 'power4' });
 
-        this.actionFeedback = this.add.text(20, 263, "", {fontFamily: 'Teko, sans-serif', fontSize: '18pt', fontStyle: 'italic', color: '#FFFFFF', wordWrap: { width: 320, useAdvancedWrap: true }});
+		this.actionFeedback = this.add.text(20, 263, "", {fontFamily: 'Teko, sans-serif', fontSize: '18pt', fontStyle: 'italic', color: '#FFFFFF', wordWrap: { width: 320, useAdvancedWrap: true }});
 
-        this.submitFeedback = this.add.text(180, 685, "", {fontFamily: 'Teko, sans-serif', fontSize: '32pt', color: '#FFFFFF', wordWrap: { width: 290, useAdvancedWrap: true }}).setAlpha(0);
-        this.submitFeedback.setOrigin(0.5, 0.5);
-        this.choices = [];
+		this.submitFeedback = this.add.text(180, 685, "", {fontFamily: 'Teko, sans-serif', fontSize: '32pt', color: '#FFFFFF', wordWrap: { width: 290, useAdvancedWrap: true }}).setAlpha(0);
+		this.submitFeedback.setOrigin(0.5, 0.5);
+		this.choices = [];
 
-        // Initializing the quiz question object to store later for this question attempt
-        this.questionResult = {
-            timestamp: new Date().toString(),
-            score: this.points,
+		// Initializing the quiz question object to store later for this question attempt
+		this.questionResult = {
+		    timestamp: new Date().toLocaleString("en-US"),
+		    score: this.points,
             question: this.quizQuestion,
             attempts: 1,
             questionNum: data.gameObj.GLOBAL.QUIZ_RESULTS.length + 1
@@ -103,6 +108,8 @@ class QuizScreen extends Phaser.Scene {
 
         this.submitBtn = this.add.image(180, 620, "submit_btn").setScale(0.40).setAlpha(0);
         this.submitBtn.addListener("pointerup", this.bindFn(function(){
+            this.audioplayer.playClickSound();
+
             this.submitFeedback.setAlpha(1.0);
 
             if (this.quizQuestion.type == "drag and drop") {
@@ -115,6 +122,8 @@ class QuizScreen extends Phaser.Scene {
                 // On correct
                 this.submitFeedback.text = "+" + this.points + " POINTS!";
                 this.submitFeedback.setColor("#008000");
+
+                this.audioplayer.playCorrectSound();
     
                 data.scorekeeping.addKnowledgePoints(this.points);
 
@@ -140,6 +149,7 @@ class QuizScreen extends Phaser.Scene {
                 this.submitFeedback.text = "Try Again";
                 this.submitFeedback.setColor("#FF0000");
                 this.halvePointsAndDisplay();
+                this.audioplayer.playIncorrectSound();
                 this.questionResult.attempts++;
                 this.questionResult.score = Math.floor(this.questionResult.score / 2);
     
@@ -275,14 +285,8 @@ class QuizScreen extends Phaser.Scene {
             // display the submit button instantly
             this.tweens.add({ targets: this.submitBtn, alpha: 1.0, duration: 1000, ease: 'power4' });
             this.submitBtn.setInteractive();
-            let occupiedY = [];
             
             for (let i = 0; i < question.options.length; i++) {
-                // buffer to keep items in the box
-                // Represents how many pixels in from each edge to spawn choice.
-                let buffer = 120;
-
-                let validY = false;
 
                 let randx = (Math.random() * 255) + 40;
 
@@ -311,6 +315,7 @@ class QuizScreen extends Phaser.Scene {
 
     // Selects choice and updates colors
     onMultipleChoiceClick(numChoice) {
+        this.audioplayer.playClickSound();
         // If this is the first time selecting an answer, show the submit button
         if (this.selectedChoice == null) {
             this.tweens.add({ targets: this.submitBtn, alpha: 1.0, duration: 1000, ease: 'power4' });
