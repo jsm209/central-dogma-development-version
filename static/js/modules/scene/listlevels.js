@@ -36,16 +36,16 @@ class ListLevels extends Phaser.Scene {
         this.graphics.fillRect(18, 152, 320, 50);
 
         this.graphics.fillStyle(0x006FFF, 0.4);
-        this.graphics.fillRect(18, 212, 320, 45);
+        this.graphics.fillRect(18, 212, 320, 50);
 
         // Sound Effects
         this.audioplayer = new AudioPlayer();
 
         // Level Selection UI/Functionality
-        this.leftLevelBtn = this.add.image(60, 600, "left_arrow_btn").setScale(0.25).setInteractive();
-        this.rightLevelBtn = this.add.image(300, 600, "right_arrow_btn").setScale(0.25).setInteractive();
-        this.goBtn = this.add.image(180, 600, "go_btn").setScale(0.40).setInteractive();
-        this.backBtn = this.add.image(50, 690, "back_btn").setScale(0.30).setInteractive();
+        this.leftLevelBtn = this.add.image(60, 670, "left_arrow_btn").setScale(0.25).setInteractive();
+        this.rightLevelBtn = this.add.image(300, 670, "right_arrow_btn").setScale(0.25).setInteractive();
+        this.goBtn = this.add.image(180, 645, "go_btn").setScale(0.40).setInteractive();
+        this.backBtn = this.add.image(180, 710, "back_btn").setScale(0.30).setInteractive(); //50
         this.signoutBtn = this.add.image(250, 690, "signout_btn").setScale(0.5).setInteractive();
         this.sessionbtn = this.add.image(290, 35, "leadererboard_btn").setScale(0.33).setAlpha(0);
         this.greeting = this.add.text(26, 30, "", 
@@ -105,14 +105,27 @@ class ListLevels extends Phaser.Scene {
         })
 
         // Level Selection Descriptors
-        this.levelBrowseTitle = this.add.text(20, 155, "", 
-            {fontFamily: 'Teko', fontSize: '36pt', color: '#000000', align: 'center'});
+        this.levelBrowseTitle = this.add.text(20, 160, "", 
+            {fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center'});
 
         this.levelBrowseSubtitle = this.add.text(20, 220, "", 
-            {fontFamily: 'Teko', fontSize: '28pt', color: '#000000', align: 'center'}); 
+            {fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center'}); 
 
-        this.levelBrowseDesc = this.add.text(20, 300, "", 
-            {fontFamily: 'Teko', fontSize: '20pt', color: '#000000', align: 'left', wordWrap: { width: 320, useAdvancedWrap: true } });                                  
+        // In line style rendering with rexBBCodeText
+        this.levelBrowseDesc = this.add.rexBBCodeText(20, 300, "", {
+            fontFamily: 'Teko',
+            fontSize: "26px",
+            color: "#000000",
+            halign: "left",
+            wrap: {
+                mode: "word",
+                width: 300
+            },
+            lineSpacing: 10
+        });
+
+        // Images to accompany level descriptions
+        this.levelBrowseImage = null;
 
         // Functionality to skip DOGMA animation, also fades in content.
         let that = this;
@@ -193,8 +206,9 @@ class ListLevels extends Phaser.Scene {
             
             // Gets values initially
             let table = this.domOverlay.getChildByID("sessions-leaderboard-table");
-            cdapi.sessionLeaderboard(sessionID, selectedCategory).then(results => {
-                this.displayLeaderboardResults(results, table);
+            cdapi.getTotalLeaderboard(sessionID, selectedCategory, 100).then(results => {
+                console.log(results);
+                this.displayLeaderboardResults(results.result, table);
             });
 
             // And also when sort by selector is changed
@@ -203,8 +217,9 @@ class ListLevels extends Phaser.Scene {
                 if (event.target.id == "category-selector") {
                     selectedCategory = event.target.value;
                     console.log(selectedCategory);
-                    cdapi.sessionLeaderboard(sessionID, selectedCategory).then(results => {
-                        this.displayLeaderboardResults(results, table);
+                    cdapi.getTotalLeaderboard(sessionID, selectedCategory, 100).then(results => {
+                        console.log(results);
+                        this.displayLeaderboardResults(results.result, table);
                     });
                 }
             });
@@ -428,8 +443,6 @@ class ListLevels extends Phaser.Scene {
     displayLevel(level) {
         if (level > this.levels.length || this.level < 0) {
             console.error("Given level number to display, " + this.level + ", is not a valid level number.");
-            // Is there a better way of handling errors? like a way to break or something instead of putting everything
-            // into a giant else branch?
         } else {
             let title = this.levels[level].name;
             let desc = this.levels[level].description;
@@ -440,7 +453,7 @@ class ListLevels extends Phaser.Scene {
             if (speed > 33) {
                 difficulty = "(Easy)";
             } else if (speed >= 25) {
-                difficulty = "(Medium)";
+                difficulty = "(Moderate)";
             } else {
                 difficulty = "(Hard)";
             }
@@ -453,10 +466,24 @@ class ListLevels extends Phaser.Scene {
                 } else {
                     this.levelBrowseDesc.text = desc;
                 }
-                this.levelBrowseSubtitle.text = "Level " + (level + 1) + " - " + difficulty;
+                this.levelBrowseSubtitle.text = "Level " + (level + 1) + " : " + difficulty;
             } else {
-                this.levelBrowseSubtitle.text = "Level " + (level + 1) + " - LOCKED";
+                this.levelBrowseSubtitle.text = "Level " + (level + 1) + " : LOCKED";
                 this.levelBrowseDesc.text = "You could probably write something about how to unlock this level here.";
+            }
+
+            // Levels 13, 14, 16, and 19 have special images to show.
+
+            // should destroy image if this.levelBrowsImage is an image
+            if (this.levelBrowseImage != null) {
+                this.levelBrowseImage.destroy();
+            }
+
+            if (this.levels[level].description_image) {
+                let image = this.levels[level].description_image
+                this.levelBrowseImage = this.add.image(image.x, image.y, image.name).setScale(image.scale).setOrigin(0.5, 0.5);
+            } else {
+                this.levelBrowseImage = null;
             }
         }
     }

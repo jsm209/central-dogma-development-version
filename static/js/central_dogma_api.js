@@ -5,7 +5,7 @@
     // **********************************************************************
     var cdapi = { };
     cdapi.version = '1.0.0';
-    const NO_BACKEND = true;
+    const NO_BACKEND = false;
     const BASE_URL = 'http://localhost:5000';
     //const BASE_URL = '/api';
     let loggedIn = false;
@@ -264,7 +264,10 @@
         if (NO_BACKEND) {
             console.log('no backend -> dummy leader board');
             return new Promise(function(resolve, reject) {
-                var result = [ { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 }, { userName: 'user1', value: 12345 } ];
+                let result = {
+                    result: [ {userName: "heroic-orange-dinosaur", value: 606}, {userName: "heroic-orange-dinosaur", value: 490} ],
+                    status: "ok"
+                }
                 resolve(result);
             });
         }

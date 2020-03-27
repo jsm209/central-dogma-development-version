@@ -181,6 +181,9 @@ class Game {
 
         // load plugins
         this.game.load.plugin("rextagtextplugin", "static/vendor/js/rextagtextplugin.min.js", true);
+        
+        let bbcodepluginurl = "https://raw.githubusercontent.com/rexrainbow/phaser3-rex-notes/master/dist/rexbbcodetextplugin.min.js";
+        this.game.load.plugin("rexbbcodetextplugin", bbcodepluginurl, true);
 
         this.game.load.image("touch_feedback_circle", "static/img/touch_feedback/circle.png");
         this.game.load.image("touch_feedback_green_spark", "static/img/touch_feedback/green_sparkle.png");
@@ -223,6 +226,11 @@ class Game {
         this.game.load.image("rotateIcon", "static/img/rotateIcon.png");
         this.game.load.image("swipeIcon", "static/img/swipeIcon.png");
         this.game.load.image("tapIcon", "static/img/tapIcon.png");
+
+        // Prelevel directions/diagrams
+        this.game.load.image("level13_description", "static/img/prelevel_images/level_13.png");
+        this.game.load.image("level14_description", "static/img/prelevel_images/level_14.png");
+        this.game.load.image("level16_description", "static/img/prelevel_images/level_16.png");
 
         // ADENINE
         this.game.load.image("nt_adenine_backbone", "static/img/nucleotide/adenine/Adenine_Backbone@3x.png");
@@ -336,12 +344,8 @@ class Game {
         this.game.load.audio("bgmusic1", "static/audio/music/shinyTech2.mp3");
         this.game.load.audio("bgmusic2", "static/audio/music/Familiar.mp3");
         this.game.load.audio("bgmusic3", "static/audio/music/Tribulation.mp3");
+        this.game.load.audio("titlemusic", "static/audio/music/Sunrise.wav");
         
-        // Level Carousel Selector Images
-        this.game.load.image("level1", "static/img/levelCarouselImages/1.png");
-        this.game.load.image("level2", "static/img/levelCarouselImages/2.png");
-        this.game.load.image("level3", "static/img/levelCarouselImages/3.png");
-
         // Etc.
         this.game.load.image("fluff", "static/img/fluff.png");
         this.game.load.image("fluff_dark", "static/img/fluff_dark.png");
