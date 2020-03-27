@@ -603,7 +603,7 @@ import Game from "./modules/game.js";
                 "name": "level16_description",
                 "x": 200,
                 "y": 520,
-                "scale": 0.08
+                "scale": 0.16
             },
             "process": "translation",
             "speed": SPEED_SLOW,
