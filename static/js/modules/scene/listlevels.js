@@ -105,11 +105,11 @@ class ListLevels extends Phaser.Scene {
         })
 
         // Level Selection Descriptors
-        this.levelBrowseTitle = this.add.text(20, 160, "", 
-            {fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center'});
+        this.levelBrowseTitle = this.add.text(180, 178, "", 
+            {fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center'}).setOrigin(0.5, 0.5);
 
-        this.levelBrowseSubtitle = this.add.text(20, 220, "", 
-            {fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center'}); 
+        this.levelBrowseSubtitle = this.add.text(180, 238, "", 
+            {fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center'}).setOrigin(0.5, 0.5); 
 
         // In line style rendering with rexBBCodeText
         this.levelBrowseDesc = this.add.rexBBCodeText(20, 300, "", {
@@ -454,6 +454,8 @@ class ListLevels extends Phaser.Scene {
                 difficulty = "(Easy)";
             } else if (speed >= 25) {
                 difficulty = "(Moderate)";
+            } else if (level == "14" || level == "18") { // levels 15 and 19 are "very hard"
+                difficulty = "(Very Hard)";
             } else {
                 difficulty = "(Hard)";
             }

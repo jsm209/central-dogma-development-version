@@ -597,7 +597,7 @@ import Game from "./modules/game.js";
         {
             "ntSequence": "AUGCCGGGUCAUGGGCCCACUGACCAUGGGUUUUAG",
             "unlocked": true,
-            "name": "Lost in Trnaslation!",
+            "name": "Lost in Translation!",
             "description": "Match the condon (RNA) with the anticodon. Anticodons code for specific amion acids to make protein!",
             "description_image": {
                 "name": "level16_description",
