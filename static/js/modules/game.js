@@ -21,7 +21,8 @@ class Game {
      */
     constructor (levels) {
         this.GLOBAL = {
-            SCORE: 0, // Overall score as an Int
+            SCORE: 0, // Overall score as an Int,
+            ACTIVE_MUSIC: true, // Boolean to indicate whether music should be played or not.
             ACTIVE_EFFECTS: true, // Boolean to indicate whether the player is playing with effects (screen shake/flash)
             ACTIVE_EDUCATION: true, // Boolean to indicate whether the player is playing with quizzes enabled
             QUIZ_RESULTS: [], // Array of "quiz" objects
@@ -217,10 +218,11 @@ class Game {
         this.game.load.image("next_btn", "static/img/nextBtn.png");
         this.game.load.image("education_disable_btn", "static/img/educationDisableBtn.png");
         this.game.load.image("leadererboard_btn", "static/img/leaderboard.png");
-        this.game.load.image("profile_btn", "static/img/signin.png");
+        this.game.load.image("signin_btn", "static/img/signin.png");
         this.game.load.image("credits_btn", "static/img/CreditsBtn.png");
         this.game.load.image("submit_btn", "static/img/submitBtn.png");
         this.game.load.image("signout_btn", "static/img/signoutBtn.png");
+        this.game.load.image("mutemusic_btn", "static/img/muteMusicBtn.png")
 
         // Icons
         this.game.load.image("rotateIcon", "static/img/rotateIcon.png");
