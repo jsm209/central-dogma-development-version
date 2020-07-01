@@ -47,7 +47,37 @@ import Game from "./modules/game.js";
             "controls": ["T", "A"],
             "unlocked": true,
             "name": "A/T the Beginning",
-            "description": "The basics of DNA, [color=" + COLOR_A + "]A[/color] matches with [color=" + COLOR_T + "]T[/color].",
+            //"description": "The basics of DNA, [color=" + COLOR_A + "]A[/color] matches with [color=" + COLOR_T + "]T[/color].",
+            "descriptionVocab": [
+                {
+                    text: "The basics of ",
+                    x: 20,
+                    y: 300   
+                },
+                {
+                    text: "[color=" + COLOR_TERM + "]DNA, [/color]",
+                    x: 132,
+                    y: 300,
+                    popup: "Deoxyribonucleic acid is a molecule composed of two polynucleotide chains that coil around each other to form a double helix carrying genetic instructions for the development, functioning, growth and reproduction of all known organisms and many viruses."  
+                },
+                {
+                    text: "[color=" + COLOR_A + "]Adenine or 'A'[/color]",
+                    x: 175,
+                    y: 300,
+                    popup: "Adenine is a nucleobase. It is one of the four nucleobases in the nucleic acid of DNA that are represented by the letters G–C–A–T."
+                },
+                {
+                    text: "matches with ",
+                    x: 20,
+                    y: 330
+                }, 
+                {
+                    text: "[color=" + COLOR_T + "]Thymine or 'T'[/color].",
+                    x: 135,
+                    y: 330,
+                    popup: "Thymine is one of the four nucleobases in the nucleic acid of DNA that are represented by the letters G–C–A–T."
+                }
+            ],
             "process": "dna replication",
             "speed": SPEED_MEDIUM,
             "popups": {
