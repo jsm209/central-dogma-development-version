@@ -87,7 +87,7 @@ class ListLevels extends Phaser.Scene {
                     this.sessionText.text = "Session: " + data.gameObj.sessionID;
                 }
 
-                
+
             } else {
                 this.removeSignedInOnlyElements();
                 localStorage.removeItem("username");
@@ -153,7 +153,7 @@ class ListLevels extends Phaser.Scene {
         // Level Selection Descriptors
         this.levelBrowseTitle = this.add.text(180, 203, "",
             { fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center' }).setOrigin(0.5, 0.5);
-        
+
 
         this.levelBrowseSubtitle = this.add.text(180, 263, "",
             { fontFamily: 'Teko', fontSize: '32pt', color: '#000000', align: 'center' }).setOrigin(0.5, 0.5);
@@ -202,21 +202,19 @@ class ListLevels extends Phaser.Scene {
      */
     displayDescription(level) {
         this.levelBrowseDesc.text = "";
-        if (level.description) {
-            for (let i = 0; i < this.levelBrowseDescWords.length; i++) {
-                if (this.levelBrowseDescWords[i]) {
-                    this.levelBrowseDescWords[i].destroy();
-                }
+        // Destroy any prexisting clickable description terms
+        for (let i = 0; i < this.levelBrowseDescWords.length; i++) {
+            if (this.levelBrowseDescWords[i]) {
+                this.levelBrowseDescWords[i].destroy();
             }
+        }
 
-            this.levelBrowseDesc.text = level.description;           
-
-        } else if (level.descriptionVocab) {
+        if (level.descriptionVocab) {
             for (let i = 0; i < level.descriptionVocab.length; i++) {
 
                 // Create the text object
                 let curTextObject = level.descriptionVocab[i];
-                this.levelBrowseDescWords[i] = this.add.rexBBCodeText(curTextObject.x, curTextObject.y, curTextObject.text, 
+                this.levelBrowseDescWords[i] = this.add.rexBBCodeText(curTextObject.x, curTextObject.y, curTextObject.text,
                     {
                         fontFamily: 'Teko',
                         fontSize: "28px",
@@ -234,6 +232,11 @@ class ListLevels extends Phaser.Scene {
                     })
                 }
             }
+        } else if (level.description) {
+
+            // Show the normal description text
+            this.levelBrowseDesc.text = level.description;
+
         }
     }
 
@@ -400,7 +403,7 @@ class ListLevels extends Phaser.Scene {
             user.levels = uniqueUserMap[x].levels;
             uniqueUserArray.push(user);
         }
-        uniqueUserArray.sort((a, b) => {return b.score - a.score});
+        uniqueUserArray.sort((a, b) => { return b.score - a.score });
 
 
         // Fill out table user results processed above
